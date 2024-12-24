@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="action_done_appointment" model="ir.actions.server">
+        <field name="name">Done Appointment</field>
+        <field name="model_id" ref="hospital.model_hospital_appointment"/>
+        <field name="binding_model_id" ref="hospital.model_hospital_appointment"/>
+        <field name="state">code</field>
+        <field name="code">records.action_done()</field>
+    </record>
+
+    <record id="view_hospital_appointment_tree" model="ir.ui.view">
+        <field name="name">hospital.appointment.tree</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+                <header>
+                    <button confirm="Are you sure to Done?" name="action_done" string="Done"
+                            class="btn-primary"
+                            type="object"/>
+                </header>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="ap_booking_date"/>
+                <field name="checkup_date"/>
+                <field name="doctor_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_hospital_appointment_form" model="ir.ui.view">
+        <field name="name">hospital.appointment.form</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button id="button_confirm" name="action_confirm" string="Confirm" states="draft"
+                            class="btn-primary"
+                            type="object"/>
+                    <button id="button_draft" name="action_draft" string="Reset to Draft" states="done,cancel"
+                            type="object"/>
+                    <button id="button_done" confirm="Are you sure to Done?" name="action_done" string="Done"
+                            class="btn-primary" states="confirm"
+                            type="object"/>
+                    <button id="button_cancel" name="action_cancel" string="Cancel" states="draft,confirm"
+                            type="object"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,done,confirm"/>
+
+                    <button name="action_create_saleorder" class="btn-primary" string="Create Sale Order"
+                            type="object"
+                            attrs="{'invisible':[('state','!=','done')]}"
+                    />
+
+                </header>
+                <sheet>
+
+<!--                    <widget name="web_ribbon" title="Done" bg_color="bg-success"-->
+<!--                            attrs="{'invisible': [('state', '!=', 'done')]}"/>-->
+
+                    <widget name="web_ribbon" title="Confirmed" bg_color="bg-info"
+                            attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+
+
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" attrs="{'invisible': [('saleorder_count', '=', 0)]}"
+                                type="object" name="action_view_saleorders" icon="fa-list">
+                            <field name="saleorder_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="patient_address"/>
+                            <field name="gender" force_save="1"/>
+                        </group>
+
+                        <group>
+                            <field name="ap_booking_date"/>
+                            <field name="checkup_date"/>
+                            <field name="doctor_id"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Medicine">
+                            <field name="prescription_line_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                    <field name="qty"/>
+                                    <field name="price"/>
+                                    <field name="total" force_save="1"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="price"/>
+                                        </group>
+                                        <group>
+                                            <field name="qty"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Prescription">
+                            <group>
+                                <field name="prescription"/>
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="note"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_hospital_appointment_search" model="ir.ui.view">
+        <field name="name">hospital.appointment.search</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="note"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hospital_appointment" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="view_mode">tree,form</field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Book a new Appointment
+            </p>
+        </field>
+    </record>
+
+
+</odoo>

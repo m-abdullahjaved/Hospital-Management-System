@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <template id="patient_report_card">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center mb-5">
+                                <b>
+                                    <i>
+                                        Hospital Management System
+                                    </i>
+                                </b>
+                            </h2>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-auto" style="font-size: 18px;">
+                                        <h4 class="mb-3">
+                                            <b>Personal Information</b>
+                                        </h4>
+                                        <div class="my-3">
+                                            <b>Name:</b>
+                                            <t t-esc="o.name"/>
+                                        </div>
+                                        <div class="my-3">
+                                            <b>Age:</b>
+                                            <t t-esc="o.age"/>
+                                        </div>
+                                        <div class="my-3">
+                                            <b>Gender:</b>
+                                            <t t-esc="o.gender"/>
+                                        </div>
+                                        <div class="my-3">
+                                            <b>Email:</b>
+                                            <t t-esc="o.email"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="text-align:right;" class="col-auto">
+                                        <img t-att-src="o.image and image_data_uri(o.image) or '/web/static/img/user_placeholder.jpg'"
+                                             height="140" width="120"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container my-5">
+                                <h4>
+                                    <b>
+                                        Appointments
+                                    </b>
+                                </h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Ref
+                                            </th>
+                                            <th>
+                                                Booking Date
+                                            </th>
+                                            <th>
+                                                Checkup Time
+                                            </th>
+                                            <th>
+                                                Doctor
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.appointment_line_ids" t-as="line">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="line.name"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.ap_booking_date"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.checkup_date"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.doctor_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.state"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

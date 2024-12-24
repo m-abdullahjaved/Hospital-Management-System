@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_hospital_kids" model="ir.actions.act_window">
+            <field name="name">Kids</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="domain">[('age', '&lt;=', 18)]</field>
+            <field name="context">{'default_age': 1}</field>
+
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new Patient
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
